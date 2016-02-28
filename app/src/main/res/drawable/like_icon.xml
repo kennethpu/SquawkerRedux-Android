@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="@android:integer/config_shortAnimTime" android:exitFadeDuration="@android:integer/config_shortAnimTime">
+    <!-- NOTE: order is important (the first matching state(s) is what is rendered) -->
+    <item android:drawable="@drawable/like_off_pressed" android:state_pressed="true" android:state_selected="false" />
+    <item android:drawable="@drawable/like_on_pressed" android:state_pressed="true" android:state_selected="true"/>
+    <item android:drawable="@drawable/like_off" android:state_pressed="false" android:state_selected="false"/>
+    <item android:drawable="@drawable/like_on" android:state_pressed="false" android:state_selected="true"/>
+</selector>

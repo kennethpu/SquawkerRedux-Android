@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="twitter_blue">#55acee</color>
+    <color name="bunker">#292f33</color>
+    <color name="blue_bayoux">#66757f</color>
+    <color name="mischka">#ccd6dd</color>
+    <color name="mystic">#e1e8ed</color>
+    <color name="white">#ffffff</color>
+    <color name="icon_default">#aab8c2</color>
+    <color name="like_red">#eb154c</color>
+    <color name="retweet_green">#00d084</color>
+
+</resources>
