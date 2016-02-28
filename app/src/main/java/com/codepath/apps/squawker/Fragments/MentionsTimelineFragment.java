@@ -34,6 +34,7 @@ public class MentionsTimelineFragment extends TimelineFragment {
 
     @Override
     public void insertTweet(Tweet tweet) {
+        // Only insert tweet if current user is mentioned in the tweet
         String body = tweet.getBody();
         String screenName = "@" + new UserStorage(getContext()).getScreenName();
         if (body.contains(screenName)) {

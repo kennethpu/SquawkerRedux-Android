@@ -120,7 +120,9 @@ public class TweetDetailActivity extends AppCompatActivity implements ComposeFra
                     client.retweetTweet(tweet.getuId(), new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            Tweet newTweet = Tweet.fromJSON(response);
+                            Tweet newTweet = tweet;
+                            newTweet.setRetweeted(true);
+                            newTweet.setRetweetCount(tweet.getRetweetCount() + 1);
                             mTweet = newTweet;
                             configureRetweetsForTweet(newTweet);
                         }
