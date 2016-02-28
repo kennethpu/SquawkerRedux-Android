@@ -14,6 +14,11 @@ public class User implements Parcelable {
     private String fullName;
     private String screenName;
     private String profileImageUrl;
+    private String profileBannerImageUrl;
+    private String tagLine;
+    private int numTweets;
+    private int numFollowing;
+    private int numFollowers;
 
     public static User fromJSON(JSONObject jsonObject) {
         User user = new User();
@@ -23,6 +28,11 @@ public class User implements Parcelable {
             user.fullName = jsonObject.getString("name");
             user.screenName = jsonObject.getString("screen_name");
             user.profileImageUrl = jsonObject.getString("profile_image_url");
+            user.profileBannerImageUrl = jsonObject.getString("profile_banner_url");
+            user.tagLine = jsonObject.getString("description");
+            user.numTweets = Integer.parseInt(jsonObject.getString("statuses_count"));
+            user.numFollowing = Integer.parseInt(jsonObject.getString("friends_count"));
+            user.numFollowers = Integer.parseInt(jsonObject.getString("followers_count"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -46,6 +56,29 @@ public class User implements Parcelable {
         return profileImageUrl;
     }
 
+    public String getProfileBannerImageUrl() {
+        return profileBannerImageUrl;
+    }
+
+    public String getTagLine() {
+        return tagLine;
+    }
+
+    public int getNumTweets() {
+        return numTweets;
+    }
+
+    public int getNumFollowing() {
+        return numFollowing;
+    }
+
+    public int getNumFollowers() {
+        return numFollowers;
+    }
+
+    public User() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -57,9 +90,11 @@ public class User implements Parcelable {
         dest.writeString(this.fullName);
         dest.writeString(this.screenName);
         dest.writeString(this.profileImageUrl);
-    }
-
-    public User() {
+        dest.writeString(this.profileBannerImageUrl);
+        dest.writeString(this.tagLine);
+        dest.writeInt(this.numTweets);
+        dest.writeInt(this.numFollowing);
+        dest.writeInt(this.numFollowers);
     }
 
     private User(Parcel in) {
@@ -67,9 +102,14 @@ public class User implements Parcelable {
         this.fullName = in.readString();
         this.screenName = in.readString();
         this.profileImageUrl = in.readString();
+        this.profileBannerImageUrl = in.readString();
+        this.tagLine = in.readString();
+        this.numTweets = in.readInt();
+        this.numFollowing = in.readInt();
+        this.numFollowers = in.readInt();
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         public User createFromParcel(Parcel source) {
             return new User(source);
         }

@@ -13,4 +13,8 @@
     <string name="placeholder_date">5:36 AM · 5 Oct 2015</string>
     <string name="title_retweets">RETWEETS</string>
     <string name="title_favorites">FAVORITES</string>
+    <string name="title_tweets_count">TWEETS</string>
+    <string name="title_following_count">FOLLOWING</string>
+    <string name="title_followers_count">FOLLOWERS</string>
+    <string name="count_placeholder">42</string>
 </resources>

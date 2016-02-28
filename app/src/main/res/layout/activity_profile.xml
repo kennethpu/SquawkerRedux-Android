@@ -3,15 +3,159 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="com.codepath.apps.squawker.Activities.ProfileActivity">
 
     <RelativeLayout
         android:id="@+id/rlUserHeader"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"></RelativeLayout>
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/ivBanner"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/twitter_blue"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+
+        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rivProfile"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_below="@+id/ivBanner"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="-30dp"
+            app:riv_border_color="@color/white"
+            app:riv_border_width="3dip"
+            app:riv_corner_radius="5dip" />
+
+        <TextView
+            android:id="@+id/tvUserTimelineFullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivBanner"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/rivProfile"
+            android:layout_toRightOf="@+id/rivProfile"
+            android:text="@string/placeholder_full_name"
+            android:textColor="@color/bunker"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvUserTimelineScreenName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-3dp"
+            android:layout_alignLeft="@+id/tvUserTimelineFullName"
+            android:layout_below="@+id/tvUserTimelineFullName"
+            android:text="@string/placeholder_screen_name"
+            android:textColor="@color/icon_default" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/rivProfile"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/mischka" />
+
+        <LinearLayout
+            android:id="@+id/llStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/divider"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/title_tweets_count"
+                    android:textColor="@color/icon_default" />
+
+                <TextView
+                    android:id="@+id/tvTweetCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/count_placeholder"
+                    android:textColor="@color/bunker" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="60dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginStart="60dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/title_following_count"
+                    android:textColor="@color/icon_default" />
+
+                <TextView
+                    android:id="@+id/tvFollowingCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/count_placeholder"
+                    android:textColor="@color/bunker" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/title_followers_count"
+                    android:textColor="@color/icon_default" />
+
+                <TextView
+                    android:id="@+id/tvFollowersCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/count_placeholder"
+                    android:textColor="@color/bunker" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/llStats"
+            android:layout_marginTop="5dp"
+            android:background="@color/twitter_blue" />
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/flContainer"
@@ -19,5 +163,5 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/rlUserHeader"></FrameLayout>
+        android:layout_below="@+id/rlUserHeader"/>
 </RelativeLayout>

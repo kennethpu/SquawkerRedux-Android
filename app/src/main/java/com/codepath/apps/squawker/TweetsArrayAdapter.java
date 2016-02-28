@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.squawker.Models.Tweet;
+import com.codepath.apps.squawker.Models.User;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.text.ParseException;
@@ -73,6 +74,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         void retweetTweet(int position);
         void favoriteTweet(int position);
         void unFavoriteTweet(int position);
+        void showUserProfile(User user);
     }
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets, ITweetActionsListener listener) {
@@ -95,6 +97,13 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         viewHolder.rivProfileImage.setImageResource(0);
         Glide.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(viewHolder.rivProfileImage);
+        viewHolder.rivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.showUserProfile(tweet.getUser());
+            }
+        });
+
         viewHolder.tvFullName.setText(tweet.getUser().getFullName());
         viewHolder.tvScreenName.setText("@" + tweet.getUser().getScreenName());
         viewHolder.tvTimeStamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));

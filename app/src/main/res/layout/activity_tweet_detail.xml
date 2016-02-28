@@ -118,7 +118,7 @@
             android:id="@+id/tvDetailRetweetCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="42"
+            android:text="@string/count_placeholder"
             android:textColor="@color/bunker" />
 
         <TextView
@@ -135,7 +135,7 @@
             android:id="@+id/tvDetailFavoriteCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="42"
+            android:text="@string/count_placeholder"
             android:textColor="@color/bunker" />
 
         <TextView

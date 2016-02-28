@@ -13,9 +13,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.codepath.apps.squawker.Activities.ProfileActivity;
 import com.codepath.apps.squawker.Activities.TweetDetailActivity;
 import com.codepath.apps.squawker.EndlessScrollListener;
 import com.codepath.apps.squawker.Models.Tweet;
+import com.codepath.apps.squawker.Models.User;
 import com.codepath.apps.squawker.R;
 import com.codepath.apps.squawker.SquawkerApplication;
 import com.codepath.apps.squawker.SquawkerClient;
@@ -37,6 +39,7 @@ import butterknife.ButterKnife;
 public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITweetActionsListener {
     private final static String ARG_TWEET = "ARG_TWEET";
     private final static String ARG_POSITION = "ARG_POSITION";
+    private final static String ARG_USER = "ARG_USER";
 
     private final static int REQUEST_CODE = 42;
 
@@ -202,6 +205,13 @@ public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITw
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
+    }
+
+    @Override
+    public void showUserProfile(User user) {
+        Intent i = new Intent(getContext(), ProfileActivity.class);
+        i.putExtra(ARG_USER, user);
+        startActivity(i);
     }
 
     public void insertTweet(Tweet tweet) {
