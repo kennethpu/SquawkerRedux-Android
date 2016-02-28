@@ -17,7 +17,7 @@ import com.codepath.apps.squawker.TimelineFragmentPagerAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TimelineFragment.IOnReplyListener {
 
     @Bind(R.id.viewpager)
     ViewPager viewPager;
@@ -48,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onReplyTweet(Tweet tweet) {
+        String preText = "@" + tweet.getUser().getScreenName() + " ";
+        composeTweet(preText);
+    }
+
     public void onComposeAction(MenuItem menuItem) {
         composeTweet("");
     }
@@ -62,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         int currentItem = viewPager.getCurrentItem();
         if (currentItem == 0) {
             TimelineFragment timelineFragment = (TimelineFragment) timelineAdapter.getItem(viewPager.getCurrentItem());
-//            timelineFragment.insertTweet(tweet);
+            timelineFragment.insertTweet(tweet);
         }
     }
 }

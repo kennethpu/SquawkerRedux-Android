@@ -3,6 +3,7 @@ package com.codepath.apps.squawker;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.SparseArray;
 
 import com.codepath.apps.squawker.Fragments.HomeTimelineFragment;
 import com.codepath.apps.squawker.Fragments.MentionsTimelineFragment;
@@ -12,6 +13,7 @@ import com.codepath.apps.squawker.Fragments.MentionsTimelineFragment;
  */
 public class TimelineFragmentPagerAdapter extends FragmentPagerAdapter {
     private String tabTitles[] = { "HOME", "MENTIONS" };
+    private SparseArray<Fragment> mFragments = new SparseArray<>();
 
     public TimelineFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -24,13 +26,18 @@ public class TimelineFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position == 0) {
-            return new HomeTimelineFragment();
-        } else if (position == 1) {
-            return new MentionsTimelineFragment();
-        } else {
-            return null;
+        Fragment item = mFragments.get(position);
+
+        if (item == null) {
+            if (position == 0) {
+                item = new HomeTimelineFragment();
+            } else if (position == 1) {
+                item =  new MentionsTimelineFragment();
+            }
+            mFragments.put(position, item);
         }
+
+        return item;
     }
 
     @Override

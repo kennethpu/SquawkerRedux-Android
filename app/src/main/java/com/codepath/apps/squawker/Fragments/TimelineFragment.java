@@ -1,5 +1,6 @@
 package com.codepath.apps.squawker.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,12 @@ public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITw
 
     private TweetsArrayAdapter tweetsArrayAdapter;
     private List<Tweet> tweets;
+
+    private IOnReplyListener mListener;
+
+    public interface IOnReplyListener {
+        void onReplyTweet(Tweet tweet);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,8 +108,20 @@ public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITw
     }
 
     @Override
-    public void replyTweet(int position) {
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof IOnReplyListener) {
+            mListener = (IOnReplyListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implement MyListFragment.OnItemSelectedListener");
+        }
+    }
 
+    @Override
+    public void replyTweet(int position) {
+        Tweet tweet = tweetsArrayAdapter.getItem(position);
+        mListener.onReplyTweet(tweet);
     }
 
     @Override
@@ -161,9 +180,8 @@ public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITw
         });
     }
 
-    @Override
-    public void showTweetDetail(final int position) {
-
+    public void insertTweet(Tweet tweet) {
+        tweetsArrayAdapter.insert(tweet, 0);
     }
 
     protected void populateTimeline() {

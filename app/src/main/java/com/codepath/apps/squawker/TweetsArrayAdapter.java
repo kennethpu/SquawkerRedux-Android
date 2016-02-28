@@ -73,7 +73,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         void retweetTweet(int position);
         void favoriteTweet(int position);
         void unFavoriteTweet(int position);
-        void showTweetDetail(int position);
     }
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets, ITweetActionsListener listener) {
@@ -111,7 +110,12 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
 
         // Configure reply button click action
-
+        viewHolder.ibReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.replyTweet(position);
+            }
+        });
 
         // Configure retweet section UI
         configureViewHolderRetweetsForTweet(viewHolder, tweet);
