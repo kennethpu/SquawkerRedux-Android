@@ -1,5 +1,6 @@
 package com.codepath.apps.squawker.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TweetDetailActivity extends AppCompatActivity {
+public class TweetDetailActivity extends AppCompatActivity implements ComposeFragment.IOnTweetListener {
     private final static String ARG_TWEET = "ARG_TWEET";
     private final static String ARG_POSITION = "ARG_POSITION";
     private int mPosition;
@@ -175,6 +176,24 @@ public class TweetDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent data = new Intent();
+        data.putExtra(ARG_TWEET, mTweet);
+        data.putExtra(ARG_POSITION, mPosition);
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
+    @Override
+    public void onPostTweet(Tweet tweet) {
+        Intent data = new Intent();
+        data.putExtra(ARG_TWEET, tweet);
+        data.putExtra(ARG_POSITION, -1);
+        setResult(RESULT_OK, data);
+        finish();
     }
 
     private String getTimeString(String rawJsonDat) {
