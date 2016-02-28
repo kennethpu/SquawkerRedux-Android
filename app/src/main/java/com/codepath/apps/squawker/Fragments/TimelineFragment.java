@@ -75,6 +75,7 @@ public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITw
         lvTweets.setAdapter(tweetsArrayAdapter);
 
         // Set up pull-to-refresh
+        swipeContainer.setColorSchemeResources(R.color.twitter_blue);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
