@@ -1,6 +1,7 @@
 package com.codepath.apps.squawker.Activities;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -46,6 +47,8 @@ public class ProfileActivity extends AppCompatActivity implements TimelineFragme
     @Bind(R.id.tvFollowersCount)
     TextView tvFollowersCount;
 
+    private UserTimelineFragment userTimelineFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity implements TimelineFragme
         User user = getIntent().getExtras().getParcelable(ARG_USER);
         getSupportActionBar().hide();
         if (savedInstanceState == null) {
-            UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(user.getScreenName());
+            userTimelineFragment = UserTimelineFragment.newInstance(user.getScreenName());
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flContainer, userTimelineFragment);
@@ -67,12 +70,15 @@ public class ProfileActivity extends AppCompatActivity implements TimelineFragme
 
     @Override
     public void onReplyTweet(Tweet tweet) {
-
+        String preText = "@" + tweet.getUser().getScreenName() + " ";
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeFragment composeTweetDialog = ComposeFragment.newInstance(preText);
+        composeTweetDialog.show(fm, "fragment_compose_tweet");
     }
 
     @Override
     public void onPostTweet(Tweet tweet) {
-
+        userTimelineFragment.insertTweet(tweet);
     }
 
     private void configureViewWithUser(User user) {

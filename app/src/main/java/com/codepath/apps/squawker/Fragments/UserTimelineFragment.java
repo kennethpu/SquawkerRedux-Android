@@ -47,7 +47,7 @@ public class UserTimelineFragment extends TimelineFragment {
     public void insertTweet(Tweet tweet) {
         // Only insert tweet if author is the current timeline's user
         String screenName = tweet.getUser().getScreenName();
-        if (screenName.equals(getArguments().getLong(ARG_SCREEN_NAME))) {
+        if (screenName.equals(getArguments().getString(ARG_SCREEN_NAME))) {
             super.insertTweet(tweet);
         }
     }
