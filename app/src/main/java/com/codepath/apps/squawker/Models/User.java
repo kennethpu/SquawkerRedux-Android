@@ -28,11 +28,11 @@ public class User implements Parcelable {
             user.fullName = jsonObject.getString("name");
             user.screenName = jsonObject.getString("screen_name");
             user.profileImageUrl = jsonObject.getString("profile_image_url");
-            user.profileBannerImageUrl = jsonObject.getString("profile_banner_url");
             user.tagLine = jsonObject.getString("description");
             user.numTweets = Integer.parseInt(jsonObject.getString("statuses_count"));
             user.numFollowing = Integer.parseInt(jsonObject.getString("friends_count"));
             user.numFollowers = Integer.parseInt(jsonObject.getString("followers_count"));
+            user.profileBannerImageUrl = jsonObject.getString("profile_banner_url");
         } catch (JSONException e) {
             e.printStackTrace();
         }

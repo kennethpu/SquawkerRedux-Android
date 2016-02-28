@@ -169,7 +169,11 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             long dateMillis = sf.parse(rawJsonDate).getTime();
             String relativeDateString = DateUtils.getRelativeTimeSpanString(dateMillis, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
             String[] stringComponents = relativeDateString.split(" ");
-            relativeDate = stringComponents[0] + stringComponents[1].charAt(0);
+            if (relativeDateString.equals("Yesterday")) {
+                relativeDate = "1d";
+            } else {
+                relativeDate = stringComponents[0] + stringComponents[1].charAt(0);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

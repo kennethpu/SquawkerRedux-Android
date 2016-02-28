@@ -12,15 +12,20 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.squawker.Fragments.ComposeFragment;
 import com.codepath.apps.squawker.Fragments.TimelineFragment;
 import com.codepath.apps.squawker.Models.Tweet;
+import com.codepath.apps.squawker.Models.User;
 import com.codepath.apps.squawker.R;
+import com.codepath.apps.squawker.SquawkerApplication;
 import com.codepath.apps.squawker.TimelineFragmentPagerAdapter;
-import com.codepath.apps.squawker.UserStorage;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements TimelineFragment.IOnReplyListener, ComposeFragment.IOnTweetListener {
-    private static final String ARG_SCREEN_NAME = "ARG_SCREEN_NAME";
+    private static final String ARG_USER = "ARG_USER";
 
     @Bind(R.id.viewpager)
     ViewPager viewPager;
@@ -68,10 +73,18 @@ public class MainActivity extends AppCompatActivity implements TimelineFragment.
     }
 
     public void onProfileAction(MenuItem menuItem) {
-        Intent i = new Intent(this, ProfileActivity.class);
-        String screenName = new UserStorage(this).getScreenName();
-        i.putExtra(ARG_SCREEN_NAME, screenName);
-        startActivity(i);
+        SquawkerApplication.getRestClient().getUserCredentials(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                User user = User.fromJSON(response);
+
+                if (user != null) {
+                    Intent i = new Intent(getBaseContext(), ProfileActivity.class);
+                    i.putExtra(ARG_USER, user);
+                    startActivity(i);
+                }
+            }
+        });
     }
 
     public void composeTweet(String preText) {
