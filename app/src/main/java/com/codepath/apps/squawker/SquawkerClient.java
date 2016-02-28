@@ -20,7 +20,7 @@ public class SquawkerClient extends OAuthBaseClient {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
     }
 
-    public void geUserCredentials(AsyncHttpResponseHandler handler) {
+    public void getUserCredentials(AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("account/verify_credentials.json");
         RequestParams params = new RequestParams();
         getClient().get(apiUrl, params, handler);

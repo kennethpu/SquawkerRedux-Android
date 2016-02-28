@@ -35,7 +35,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<SquawkerClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		SquawkerApplication.getRestClient().geUserCredentials(new JsonHttpResponseHandler() {
+		SquawkerApplication.getRestClient().getUserCredentials(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // Check if we've previously persisted the current user
