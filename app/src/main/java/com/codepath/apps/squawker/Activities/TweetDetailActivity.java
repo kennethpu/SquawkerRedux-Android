@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 public class TweetDetailActivity extends AppCompatActivity implements ComposeFragment.IOnTweetListener {
     private final static String ARG_TWEET = "ARG_TWEET";
     private final static String ARG_POSITION = "ARG_POSITION";
+    private final static String ARG_USER = "ARG_USER";
     private int mPosition;
     private Tweet mTweet;
 
@@ -83,6 +84,15 @@ public class TweetDetailActivity extends AppCompatActivity implements ComposeFra
 
         rivUserImage.setImageResource(0);
         Glide.with(this).load(tweet.getUser().getProfileImageUrl()).into(rivUserImage);
+        rivUserImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getBaseContext(), ProfileActivity.class);
+                i.putExtra(ARG_USER, tweet.getUser());
+                startActivity(i);
+            }
+        });
+
         tvUserFullName.setText(tweet.getUser().getFullName());
         tvUserScreenName.setText("@" + tweet.getUser().getScreenName());
         tvDate.setText(tweet.getCreatedAt());
