@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         int currentItem = viewPager.getCurrentItem();
         if (currentItem == 0) {
             TimelineFragment timelineFragment = (TimelineFragment) timelineAdapter.getItem(viewPager.getCurrentItem());
-            timelineFragment.insertTweet(tweet);
+//            timelineFragment.insertTweet(tweet);
         }
     }
 }
