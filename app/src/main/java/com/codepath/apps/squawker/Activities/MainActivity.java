@@ -1,5 +1,6 @@
 package com.codepath.apps.squawker.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -13,11 +14,13 @@ import com.codepath.apps.squawker.Fragments.TimelineFragment;
 import com.codepath.apps.squawker.Models.Tweet;
 import com.codepath.apps.squawker.R;
 import com.codepath.apps.squawker.TimelineFragmentPagerAdapter;
+import com.codepath.apps.squawker.UserStorage;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements TimelineFragment.IOnReplyListener, ComposeFragment.IOnTweetListener {
+    private static final String ARG_SCREEN_NAME = "ARG_SCREEN_NAME";
 
     @Bind(R.id.viewpager)
     ViewPager viewPager;
@@ -62,6 +65,13 @@ public class MainActivity extends AppCompatActivity implements TimelineFragment.
 
     public void onComposeAction(MenuItem menuItem) {
         composeTweet("");
+    }
+
+    public void onProfileAction(MenuItem menuItem) {
+        Intent i = new Intent(this, ProfileActivity.class);
+        String screenName = new UserStorage(this).getScreenName();
+        i.putExtra(ARG_SCREEN_NAME, screenName);
+        startActivity(i);
     }
 
     public void composeTweet(String preText) {

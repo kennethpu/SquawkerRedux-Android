@@ -44,6 +44,16 @@ public class SquawkerClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
     }
 
+    public void getUserTimeline(long maxId, String screenName, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("screen_name", screenName);
+        if (maxId != 0) {
+            params.put("max_id", maxId-1);
+        }
+        getClient().get(apiUrl, params, handler);
+    }
+
     public void retweetTweet(long tweetId, AsyncHttpResponseHandler handler) {
         String extension = String.format("statuses/retweet/%d.json", tweetId);
         String apiUrl = getApiUrl(extension);
