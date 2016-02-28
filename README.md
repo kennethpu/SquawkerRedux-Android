@@ -20,8 +20,8 @@ The following **required** functionality is completed:
 
 The following **optional** functionality is completed:
 - [ ] Robust error handling, check if internet is available, handle error cases, network failures
-- [ ] When a network request is sent, user sees an indeterminate progress indicator (1 point)
-- [x] User can "reply" to any tweet on their home timeline (1 point)
+- [ ] When a network request is sent, user sees an indeterminate progress indicator
+- [x] User can "reply" to any tweet on their home timeline
   - [x] The user that wrote the original tweet is automatically "@" replied in compose
 - [x] User can click on a tweet to be taken to a "detail view" of that tweet
 - [x] User can take favorite (and unfavorite) or retweet actions on a tweet
