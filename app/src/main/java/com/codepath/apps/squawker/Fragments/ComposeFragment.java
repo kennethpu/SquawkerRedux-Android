@@ -1,5 +1,6 @@
 package com.codepath.apps.squawker.Fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.codepath.apps.squawker.Activities.MainActivity;
 import com.codepath.apps.squawker.Models.Tweet;
 import com.codepath.apps.squawker.R;
 import com.codepath.apps.squawker.SquawkerApplication;
@@ -64,6 +64,12 @@ public class ComposeFragment extends DialogFragment{
 
     private SquawkerClient client;
 
+    private IOnTweetListener mListener;
+
+    public interface IOnTweetListener {
+        void onPostTweet(Tweet tweet);
+    }
+
     public ComposeFragment() {
         // Empty constructor is required for DialogFragment
     }
@@ -75,6 +81,13 @@ public class ComposeFragment extends DialogFragment{
         frag.setArguments(args);
 
         return frag;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        client = SquawkerApplication.getRestClient();
     }
 
     @Override
@@ -146,21 +159,32 @@ public class ComposeFragment extends DialogFragment{
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SquawkerApplication.getRestClient().postTweet(etBody.getText().toString(), new JsonHttpResponseHandler() {
+                client.postTweet(etBody.getText().toString(), new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Tweet tweet = Tweet.fromJSON(response);
-                        ((MainActivity) getActivity()).insertTweet(tweet);
+                        mListener.onPostTweet(tweet);
                         getDialog().dismiss();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                         Log.d("DEBUG", errorResponse.toString());
-                        Toast.makeText(getActivity().getApplicationContext(), "Posting Tweet Failed!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Posting Tweet Failed!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof IOnTweetListener) {
+            mListener = (IOnTweetListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implement ComposeFragment.IOnTweetListener");
+        }
     }
 }

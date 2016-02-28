@@ -17,7 +17,7 @@ import com.codepath.apps.squawker.TimelineFragmentPagerAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements TimelineFragment.IOnReplyListener {
+public class MainActivity extends AppCompatActivity implements TimelineFragment.IOnReplyListener, ComposeFragment.IOnTweetListener {
 
     @Bind(R.id.viewpager)
     ViewPager viewPager;
@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity implements TimelineFragment.
         composeTweet(preText);
     }
 
+    @Override
+    public void onPostTweet(Tweet tweet) {
+        TimelineFragment timelineFragment = (TimelineFragment) timelineAdapter.getItem(viewPager.getCurrentItem());
+        timelineFragment.insertTweet(tweet);
+    }
+
     public void onComposeAction(MenuItem menuItem) {
         composeTweet("");
     }
@@ -62,13 +68,5 @@ public class MainActivity extends AppCompatActivity implements TimelineFragment.
         FragmentManager fm = getSupportFragmentManager();
         ComposeFragment composeTweetDialog = ComposeFragment.newInstance(preText);
         composeTweetDialog.show(fm, "fragment_compose_tweet");
-    }
-
-    public void insertTweet(Tweet tweet) {
-        int currentItem = viewPager.getCurrentItem();
-        if (currentItem == 0) {
-            TimelineFragment timelineFragment = (TimelineFragment) timelineAdapter.getItem(viewPager.getCurrentItem());
-            timelineFragment.insertTweet(tweet);
-        }
     }
 }

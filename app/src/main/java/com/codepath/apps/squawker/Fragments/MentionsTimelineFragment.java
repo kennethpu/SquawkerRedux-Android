@@ -3,6 +3,7 @@ package com.codepath.apps.squawker.Fragments;
 import android.util.Log;
 
 import com.codepath.apps.squawker.Models.Tweet;
+import com.codepath.apps.squawker.UserStorage;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -29,5 +30,14 @@ public class MentionsTimelineFragment extends TimelineFragment {
                 swipeContainer.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void insertTweet(Tweet tweet) {
+        String body = tweet.getBody();
+        String screenName = "@" + new UserStorage(getContext()).getScreenName();
+        if (body.contains(screenName)) {
+            super.insertTweet(tweet);
+        }
     }
 }

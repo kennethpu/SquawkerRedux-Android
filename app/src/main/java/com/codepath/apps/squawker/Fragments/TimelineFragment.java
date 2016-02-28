@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.squawker.Activities.TweetDetailActivity;
 import com.codepath.apps.squawker.EndlessScrollListener;
@@ -115,7 +116,7 @@ public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITw
             mListener = (IOnReplyListener) activity;
         } else {
             throw new ClassCastException(activity.toString()
-                    + " must implement MyListFragment.OnItemSelectedListener");
+                    + " must implement TimelineFragment.IOnReplyListener");
         }
     }
 
@@ -140,6 +141,7 @@ public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITw
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("DEBUG", errorResponse.toString());
+                Toast.makeText(getContext(), "Retweet Failed!", Toast.LENGTH_SHORT).show();
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
@@ -158,6 +160,7 @@ public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITw
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("DEBUG", errorResponse.toString());
+                Toast.makeText(getContext(), "Favorite Failed!", Toast.LENGTH_SHORT).show();
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
@@ -176,6 +179,7 @@ public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITw
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("DEBUG", errorResponse.toString());
+                Toast.makeText(getContext(), "UnFavorite Failed!", Toast.LENGTH_SHORT).show();
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
