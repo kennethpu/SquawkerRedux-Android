@@ -3,7 +3,6 @@ package com.codepath.apps.squawker;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.codepath.apps.squawker.Fragments.TimelineFragment;
 import com.codepath.apps.squawker.Models.Tweet;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.makeramen.roundedimageview.RoundedImageView;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,8 +27,7 @@ import butterknife.ButterKnife;
  */
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
-    private SquawkerClient client;
-    private TimelineFragment mFragment;
+    private ITweetActionsListener mListener;
 
     static class ViewHolder {
         @Bind(R.id.rivProfileImage)
@@ -75,10 +68,18 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
     }
 
-    public TweetsArrayAdapter(Context context, List<Tweet> tweets, TimelineFragment fragment) {
+    public interface ITweetActionsListener {
+        void replyTweet(int position);
+        void retweetTweet(int position);
+        void favoriteTweet(int position);
+        void unFavoriteTweet(int position);
+        void showTweetDetail(int position);
+    }
+
+    public TweetsArrayAdapter(Context context, List<Tweet> tweets, ITweetActionsListener listener) {
         super(context, android.R.layout.simple_list_item_1, tweets);
-        client = SquawkerApplication.getRestClient();
-        mFragment = fragment;
+
+        mListener = listener;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -121,22 +122,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             public void onClick(View v) {
                 boolean isSelected = viewHolder.ibRetweet.isSelected();
                 if (!isSelected) {
-                    client.retweetTweet(tweet.getuId(), new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            Tweet newTweet = tweet;
-                            newTweet.setRetweeted(true);
-                            newTweet.setRetweetCount(tweet.getRetweetCount() + 1);
-                            configureViewHolderLikesForTweet(viewHolder, newTweet);
-                            mFragment.updateTweet(newTweet, position);
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            Log.d("DEBUG", errorResponse.toString());
-                            super.onFailure(statusCode, headers, throwable, errorResponse);
-                        }
-                    });
+                    mListener.retweetTweet(position);
                 }
             }
         });
@@ -150,35 +136,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             public void onClick(View v) {
                 boolean isSelected = viewHolder.ibLike.isSelected();
                 if (isSelected) {
-                    client.unFavoriteTweet(tweet.getuId(), new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            Tweet newTweet = Tweet.fromJSON(response);
-                            configureViewHolderLikesForTweet(viewHolder, newTweet);
-                            mFragment.updateTweet(newTweet, position);
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            Log.d("DEBUG", errorResponse.toString());
-                            super.onFailure(statusCode, headers, throwable, errorResponse);
-                        }
-                    });
+                    mListener.unFavoriteTweet(position);
                 } else {
-                    client.favoriteTweet(tweet.getuId(), new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            Tweet newTweet = Tweet.fromJSON(response);
-                            configureViewHolderLikesForTweet(viewHolder, newTweet);
-                            mFragment.updateTweet(newTweet, position);
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            Log.d("DEBUG", errorResponse.toString());
-                            super.onFailure(statusCode, headers, throwable, errorResponse);
-                        }
-                    });
+                    mListener.favoriteTweet(position);
                 }
             }
         });

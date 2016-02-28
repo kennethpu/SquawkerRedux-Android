@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,10 @@ import com.codepath.apps.squawker.R;
 import com.codepath.apps.squawker.SquawkerApplication;
 import com.codepath.apps.squawker.SquawkerClient;
 import com.codepath.apps.squawker.TweetsArrayAdapter;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +32,7 @@ import butterknife.ButterKnife;
 /**
  * Created by kpu on 2/20/16.
  */
-public class TimelineFragment extends Fragment {
+public class TimelineFragment extends Fragment implements TweetsArrayAdapter.ITweetActionsListener {
     private final static String ARG_TWEET = "ARG_TWEET";
     private final static String ARG_POSITION = "ARG_POSITION";
 
@@ -59,7 +64,7 @@ public class TimelineFragment extends Fragment {
 
         // Create adapter and link it to the list view
         tweets = new ArrayList<>();
-        tweetsArrayAdapter = new TweetsArrayAdapter(getActivity(), tweets, TimelineFragment.this);
+        tweetsArrayAdapter = new TweetsArrayAdapter(getActivity(), tweets, this);
         lvTweets.setAdapter(tweetsArrayAdapter);
 
         // Set up pull-to-refresh
@@ -95,14 +100,70 @@ public class TimelineFragment extends Fragment {
         return view;
     }
 
-    public void updateTweet(Tweet tweet, int position) {
-        tweets.set(position, tweet);
-        tweetsArrayAdapter.notifyDataSetChanged();
+    @Override
+    public void replyTweet(int position) {
+
     }
 
-    private void refreshTimeline() {
-        maxId = 0;
-        populateTimeline();
+    @Override
+    public void retweetTweet(final int position) {
+        final Tweet tweet = tweetsArrayAdapter.getItem(position);
+        client.retweetTweet(tweet.getuId(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Tweet newTweet = tweet;
+                newTweet.setRetweeted(true);
+                newTweet.setRetweetCount(tweet.getRetweetCount() + 1);
+                updateTweet(newTweet, position);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    @Override
+    public void favoriteTweet(final int position) {
+        final Tweet tweet = tweetsArrayAdapter.getItem(position);
+        client.favoriteTweet(tweet.getuId(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Tweet newTweet = Tweet.fromJSON(response);
+                updateTweet(newTweet, position);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    @Override
+    public void unFavoriteTweet(final int position) {
+        final Tweet tweet = tweetsArrayAdapter.getItem(position);
+        client.unFavoriteTweet(tweet.getuId(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Tweet newTweet = Tweet.fromJSON(response);
+                updateTweet(newTweet, position);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    @Override
+    public void showTweetDetail(final int position) {
+
     }
 
     protected void populateTimeline() {
@@ -114,5 +175,15 @@ public class TimelineFragment extends Fragment {
         if (tweets.size() > 0) {
             maxId = tweets.get(tweets.size() - 1).getuId();
         }
+    }
+
+    private void updateTweet(Tweet tweet, int position) {
+        tweets.set(position, tweet);
+        tweetsArrayAdapter.notifyDataSetChanged();
+    }
+
+    private void refreshTimeline() {
+        maxId = 0;
+        populateTimeline();
     }
 }
