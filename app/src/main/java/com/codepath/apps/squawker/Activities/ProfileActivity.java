@@ -3,6 +3,7 @@ package com.codepath.apps.squawker.Activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +33,9 @@ public class ProfileActivity extends AppCompatActivity implements TimelineFragme
 
     @Bind(R.id.tvUserTimelineScreenName)
     TextView tvUserTimelineScreenName;
+
+    @Bind(R.id.tvTagLine)
+    TextView tvTagLine;
 
     @Bind(R.id.tvTweetCount)
     TextView tvTweetCount;
@@ -83,6 +87,12 @@ public class ProfileActivity extends AppCompatActivity implements TimelineFragme
         tvTweetCount.setText(abbrevNumString(user.getNumTweets()));
         tvFollowingCount.setText(abbrevNumString(user.getNumFollowing()));
         tvFollowersCount.setText(abbrevNumString(user.getNumFollowers()));
+
+        if (user.getTagLine().length() > 0) {
+            tvTagLine.setText(user.getTagLine());
+        } else {
+            tvTagLine.setVisibility(View.GONE);
+        }
     }
 
     private String abbrevNumString(int count) {
