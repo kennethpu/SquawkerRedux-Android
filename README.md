@@ -33,6 +33,8 @@ The following **optional** functionality is completed:
 
 ### Walkthrough for all user stories:
 
+![Video Walkthrough](img/squawker.gif)
+
 Credits
 ---------
 * [Twitter API](https://dev.twitter.com/rest/public)
